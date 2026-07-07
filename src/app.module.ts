@@ -4,7 +4,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { BillsModule } from './bills/bills.module';
+import { BillsModule } from './facturas/bills.module';
 import { AuthModule } from './auth/auth.module';
 import typeormConfig from './config/typeorm.config';
 

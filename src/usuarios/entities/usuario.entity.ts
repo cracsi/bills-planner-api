@@ -3,32 +3,31 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Bill } from '../../bills/entities/bill.entity';
+import { Factura } from '../../facturas/entities/factura.entity';
+import { CuentaDePago } from '../../cuentas-de-pago/entities/cuenta-de-pago.entity';
 
-@Entity('users')
-export class User {
+@Entity('usuarios')
+export class Usuario {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  nombre: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
-  // Never serialized back in API responses — excluded manually in services/DTOs.
   @Column({ type: 'varchar', name: 'password_hash' })
   passwordHash: string;
 
-  @OneToMany(() => Bill, (bill) => bill.user)
-  bills: Bill[];
+  @OneToMany(() => Factura, (factura) => factura.usuario)
+  facturas: Factura[];
+
+  @OneToMany(() => CuentaDePago, (cuenta) => cuenta.usuario)
+  cuentasDePago: CuentaDePago[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
 }
