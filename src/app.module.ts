@@ -3,9 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { BillsModule } from './facturas/bills.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { FacturasModule } from './facturas/facturas.module';
 import { AuthModule } from './auth/auth.module';
+import { PagosModule } from './pagos/pagos.module';
+import { MetodosDePagoModule } from './metodos-de-pago/metodos-de-pago.module';
+import { CuentasDePagoModule } from './cuentas-de-pago/cuentas-de-pago.module';
+import { RecordatoriosModule } from './recordatorios/recordatorios.module';
 import typeormConfig from './config/typeorm.config';
 
 @Module({
@@ -19,9 +23,13 @@ import typeormConfig from './config/typeorm.config';
       useFactory: (configService: ConfigService) =>
         configService.get<TypeOrmModuleOptions>('typeorm', { infer: true }),
     }),
-    UsersModule,
-    BillsModule,
+    UsuariosModule,
+    FacturasModule,
     AuthModule,
+    PagosModule,
+    MetodosDePagoModule,
+    CuentasDePagoModule,
+    RecordatoriosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
