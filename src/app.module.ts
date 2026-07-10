@@ -10,7 +10,6 @@ import { PagosModule } from './pagos/pagos.module';
 import { MetodosDePagoModule } from './metodos-de-pago/metodos-de-pago.module';
 import { CuentasDePagoModule } from './cuentas-de-pago/cuentas-de-pago.module';
 import { RecordatoriosModule } from './recordatorios/recordatorios.module';
-import { AuthModule } from './auth/auth.module';
 import typeormConfig from './config/typeorm.config';
 
 @Module({
