@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCuentasDePagoDto } from './create-cuentas-de-pago.dto';
+import { CreateCuentaDePagoDto } from './create-cuenta-de-pago.dto';
 
-export class UpdateCuentasDePagoDto extends PartialType(CreateCuentasDePagoDto) {}
+export class UpdateCuentaDePagoDto extends PartialType(CreateCuentaDePagoDto) {}

@@ -1,26 +1,80 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCuentasDePagoDto } from './dto/create-cuentas-de-pago.dto';
-import { UpdateCuentasDePagoDto } from './dto/update-cuentas-de-pago.dto';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CuentaDePago } from './entities/cuenta-de-pago.entity';
+import { MetodoDePago } from '../metodos-de-pago/entities/metodo-de-pago.entity';
+import { CreateCuentaDePagoDto } from './dto/create-cuenta-de-pago.dto';
+import { UpdateCuentaDePagoDto } from './dto/update-cuenta-de-pago.dto';
 
 @Injectable()
 export class CuentasDePagoService {
-  create(createCuentasDePagoDto: CreateCuentasDePagoDto) {
-    return 'This action adds a new cuentasDePago';
+  constructor(
+    @InjectRepository(CuentaDePago)
+    private readonly cuentasDePagoRepository: Repository<CuentaDePago>,
+    @InjectRepository(MetodoDePago)
+    private readonly metodosDePagoRepository: Repository<MetodoDePago>,
+  ) {}
+
+  async create(
+    usuarioId: string,
+    dto: CreateCuentaDePagoDto,
+  ): Promise<CuentaDePago> {
+    const metodo = await this.metodosDePagoRepository.findOne({
+      where: { id: dto.metodoPagoId },
+    });
+    if (!metodo) {
+      throw new NotFoundException(
+        `Método de pago ${dto.metodoPagoId} no encontrado`,
+      );
+    }
+
+    const cuenta = this.cuentasDePagoRepository.create({ ...dto, usuarioId });
+    return this.cuentasDePagoRepository.save(cuenta);
   }
 
-  findAll() {
-    return `This action returns all cuentasDePago`;
+  findAll(usuarioId: string): Promise<CuentaDePago[]> {
+    return this.cuentasDePagoRepository.find({ where: { usuarioId } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cuentasDePago`;
+  async findOne(usuarioId: string, id: string): Promise<CuentaDePago> {
+    const cuenta = await this.cuentasDePagoRepository.findOne({ where: { id } });
+    if (!cuenta) {
+      throw new NotFoundException(`Cuenta de pago ${id} no encontrada`);
+    }
+    if (cuenta.usuarioId !== usuarioId) {
+      throw new ForbiddenException('No tienes acceso a esta cuenta de pago');
+    }
+    return cuenta;
   }
 
-  update(id: number, updateCuentasDePagoDto: UpdateCuentasDePagoDto) {
-    return `This action updates a #${id} cuentasDePago`;
+  async update(
+    usuarioId: string,
+    id: string,
+    dto: UpdateCuentaDePagoDto,
+  ): Promise<CuentaDePago> {
+    const cuenta = await this.findOne(usuarioId, id); // reuses ownership check
+
+    if (dto.metodoPagoId) {
+      const metodo = await this.metodosDePagoRepository.findOne({
+        where: { id: dto.metodoPagoId },
+      });
+      if (!metodo) {
+        throw new NotFoundException(
+          `Método de pago ${dto.metodoPagoId} no encontrado`,
+        );
+      }
+    }
+
+    Object.assign(cuenta, dto);
+    return this.cuentasDePagoRepository.save(cuenta);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cuentasDePago`;
+  async remove(usuarioId: string, id: string): Promise<void> {
+    const cuenta = await this.findOne(usuarioId, id); // reuses ownership check
+    await this.cuentasDePagoRepository.remove(cuenta);
   }
 }

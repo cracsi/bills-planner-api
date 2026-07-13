@@ -1,34 +1,59 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { CuentasDePagoService } from './cuentas-de-pago.service';
-import { CreateCuentasDePagoDto } from './dto/create-cuentas-de-pago.dto';
-import { UpdateCuentasDePagoDto } from './dto/update-cuentas-de-pago.dto';
+import { CreateCuentaDePagoDto } from './dto/create-cuenta-de-pago.dto';
+import { UpdateCuentaDePagoDto } from './dto/update-cuenta-de-pago.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+
+interface UsuarioActual {
+  id: string;
+  nombre: string;
+  email: string;
+}
 
 @Controller('cuentas-de-pago')
+@UseGuards(JwtAuthGuard)
 export class CuentasDePagoController {
   constructor(private readonly cuentasDePagoService: CuentasDePagoService) {}
 
   @Post()
-  create(@Body() createCuentasDePagoDto: CreateCuentasDePagoDto) {
-    return this.cuentasDePagoService.create(createCuentasDePagoDto);
+  create(
+    @CurrentUser() usuario: UsuarioActual,
+    @Body() dto: CreateCuentaDePagoDto,
+  ) {
+    return this.cuentasDePagoService.create(usuario.id, dto);
   }
 
   @Get()
-  findAll() {
-    return this.cuentasDePagoService.findAll();
+  findAll(@CurrentUser() usuario: UsuarioActual) {
+    return this.cuentasDePagoService.findAll(usuario.id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cuentasDePagoService.findOne(+id);
+  findOne(@CurrentUser() usuario: UsuarioActual, @Param('id') id: string) {
+    return this.cuentasDePagoService.findOne(usuario.id, id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCuentasDePagoDto: UpdateCuentasDePagoDto) {
-    return this.cuentasDePagoService.update(+id, updateCuentasDePagoDto);
+  update(
+    @CurrentUser() usuario: UsuarioActual,
+    @Param('id') id: string,
+    @Body() dto: UpdateCuentaDePagoDto,
+  ) {
+    return this.cuentasDePagoService.update(usuario.id, id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cuentasDePagoService.remove(+id);
+  remove(@CurrentUser() usuario: UsuarioActual, @Param('id') id: string) {
+    return this.cuentasDePagoService.remove(usuario.id, id);
   }
 }
