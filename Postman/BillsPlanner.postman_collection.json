@@ -109,6 +109,62 @@
       "response": []
     },
     {
+      "name": "crear metodo pago",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Successful POST request\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYmQzY2UxYi05Zjc2LTQ4NmItYTViYy0zYzYzODM0NGNmMWQiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE3ODM3ODM5MTUsImV4cCI6MTc4Mzg3MDMxNX0.bhPfnwCmm2tg65cpDXw5tAKYRg72K1Apdo96_TawB54",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"nombre\": \"Efectivo\", \"tipo\": \"manual\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000//metodos-de-pago",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "",
+            "metodos-de-pago"
+          ]
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
       "name": "Registro",
       "request": {
         "method": "POST",
@@ -140,8 +196,29 @@
     {
       "name": "consultarFacturas",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYmQzY2UxYi05Zjc2LTQ4NmItYTViYy0zYzYzODM0NGNmMWQiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE3ODM3ODM5MTUsImV4cCI6MTc4Mzg3MDMxNX0.bhPfnwCmm2tg65cpDXw5tAKYRg72K1Apdo96_TawB54",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/facturas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "facturas"
+          ]
+        }
       },
       "response": []
     }
