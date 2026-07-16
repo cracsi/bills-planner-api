@@ -9,7 +9,7 @@
   },
   "item": [
     {
-      "name": "login",
+      "name": "logins",
       "event": [
         {
           "listen": "test",
