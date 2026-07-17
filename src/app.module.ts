@@ -10,6 +10,8 @@ import { PagosModule } from './pagos/pagos.module';
 import { MetodosDePagoModule } from './metodos-de-pago/metodos-de-pago.module';
 import { CuentasDePagoModule } from './cuentas-de-pago/cuentas-de-pago.module';
 import { RecordatoriosModule } from './recordatorios/recordatorios.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { EmailModule } from './email/email.module';
 import typeormConfig from './config/typeorm.config';
 
 @Module({
@@ -18,6 +20,7 @@ import typeormConfig from './config/typeorm.config';
       isGlobal: true,
       load: [typeormConfig],
     }),
+    ScheduleModule.forRoot(), 
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) =>
@@ -30,6 +33,7 @@ import typeormConfig from './config/typeorm.config';
     MetodosDePagoModule,
     CuentasDePagoModule,
     RecordatoriosModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
