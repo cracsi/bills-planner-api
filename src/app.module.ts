@@ -12,6 +12,7 @@ import { CuentasDePagoModule } from './cuentas-de-pago/cuentas-de-pago.module';
 import { RecordatoriosModule } from './recordatorios/recordatorios.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailModule } from './email/email.module';
+import { SchedulerModule } from './scheduler/scheduler.module';
 import typeormConfig from './config/typeorm.config';
 
 @Module({
@@ -34,6 +35,7 @@ import typeormConfig from './config/typeorm.config';
     CuentasDePagoModule,
     RecordatoriosModule,
     EmailModule,
+    SchedulerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

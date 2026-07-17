@@ -1,26 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEmailDto } from './dto/create-email.dto';
-import { UpdateEmailDto } from './dto/update-email.dto';
+import { ConfigService } from '@nestjs/config';
+import { Resend } from 'resend';
 
 @Injectable()
 export class EmailService {
-  create(createEmailDto: CreateEmailDto) {
-    return 'This action adds a new email';
+  private readonly resend: Resend;
+
+  constructor(private readonly configService: ConfigService) {
+    this.resend = new Resend(this.configService.get<string>('RESEND_API_KEY'));
   }
 
-  findAll() {
-    return `This action returns all email`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} email`;
-  }
-
-  update(id: number, updateEmailDto: UpdateEmailDto) {
-    return `This action updates a #${id} email`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} email`;
+  async enviarRecordatorio(destinatario: string, mensaje: string): Promise<void> {
+    await this.resend.emails.send({
+      from: 'Bills Planner <onboarding@resend.dev>',
+      to: destinatario,
+      subject: 'Recordatorio de factura',
+      text: mensaje,
+    });
   }
 }
