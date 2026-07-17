@@ -7,8 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CuentaDePago } from './entities/cuenta-de-pago.entity';
 import { MetodoDePago } from '../metodos-de-pago/entities/metodo-de-pago.entity';
-import { CreateCuentaDePagoDto } from './dto/create-cuenta-de-pago.dto';
-import { UpdateCuentaDePagoDto } from './dto/update-cuenta-de-pago.dto';
+import { CreateCuentaDePagoDto } from './dto/create-cuentas-de-pago.dto';
+import { UpdateCuentaDePagoDto } from './dto/update-cuentas-de-pago.dto';
 
 @Injectable()
 export class CuentasDePagoService {

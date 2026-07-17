@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CuentasDePagoService } from './cuentas-de-pago.service';
-import { CreateCuentaDePagoDto } from './dto/create-cuenta-de-pago.dto';
-import { UpdateCuentaDePagoDto } from './dto/update-cuenta-de-pago.dto';
+import { CreateCuentaDePagoDto } from './dto/create-cuentas-de-pago.dto';
+import { UpdateCuentaDePagoDto } from './dto/update-cuentas-de-pago.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
