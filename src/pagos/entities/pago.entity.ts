@@ -29,8 +29,16 @@ export class Pago {
   @Column({ name: 'cuenta_de_pago_id' })
   cuentaDePagoId!: string;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2 })
-  valor!: number;
+  @Column({
+  type: 'decimal',
+  precision: 12,
+  scale: 2,
+  transformer: {
+    to: (value: number) => value,
+    from: (value: string) => parseFloat(value),
+  },
+})
+valor!: number;
 
   @Column({ type: 'date' })
   fecha!: string;

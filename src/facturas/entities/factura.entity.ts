@@ -28,8 +28,18 @@ export class Factura {
   @Column({ type: 'varchar', length: 255 })
   nombre!: string;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2 })
-  valor!: number;
+  @Column({
+  type: 'decimal',
+  precision: 12,
+  scale: 2,
+  transformer: {
+    to: (value: number) => value,
+    from: (value: string) => parseFloat(value),
+  },
+})
+valor!: number;
+
+
 
   @Column({ type: 'varchar', length: 500, nullable: true })
   descripción!: string;
