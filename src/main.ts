@@ -5,7 +5,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -14,7 +13,11 @@ async function bootstrap() {
       transform: true, // auto-transforms payloads to DTO instances
     }),
   );
+  const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:3001')
+  .split(',')
+  .map((origin) => origin.trim());
 
+app.enableCors({ origin: origins });
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
