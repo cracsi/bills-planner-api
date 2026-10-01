@@ -72,22 +72,27 @@ export class FacturasService {
   }
 
   private calcularProximaFecha(diaVencimiento: number): string {
-    const hoy = new Date();
-    let mes = hoy.getMonth();
-    let anio = hoy.getFullYear();
+  const hoy = new Date();
+  let mes = hoy.getMonth();
+  let anio = hoy.getFullYear();
 
-    // If this month's due day has already passed, target next month instead.
-    if (hoy.getDate() > diaVencimiento) {
-      mes += 1;
-      if (mes > 11) {
-        mes = 0;
-        anio += 1;
-      }
+  if (hoy.getDate() > diaVencimiento) {
+    mes += 1;
+    if (mes > 11) {
+      mes = 0;
+      anio += 1;
     }
-
-    const fecha = new Date(anio, mes, diaVencimiento);
-    return fecha.toISOString().split('T')[0]; // 'YYYY-MM-DD'
   }
+
+  const diaValido = this.clampAlUltimoDiaDelMes(anio, mes, diaVencimiento);
+  const fecha = new Date(anio, mes, diaValido);
+  return fecha.toISOString().split('T')[0];
+}
+
+private clampAlUltimoDiaDelMes(anio: number, mes: number, dia: number): number {
+  const ultimoDiaDelMes = new Date(anio, mes + 1, 0).getDate();
+  return Math.min(dia, ultimoDiaDelMes);
+}
 
   private calcularFechaSuspension(
     diaVencimiento: number,
